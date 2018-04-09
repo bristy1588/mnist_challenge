@@ -1,6 +1,6 @@
 {
   "_comment": "===== MODEL CONFIGURATION =====",
-  "model_dir": "models/a_very_robust_model",
+  "model_dir": "models/adv_trained",
 
   "_comment": "===== TRAINING CONFIGURATION =====",
   "random_seed": 4557077,
