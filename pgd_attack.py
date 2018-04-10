@@ -100,9 +100,11 @@ if __name__ == '__main__':
 
     print('Iterating over {} batches'.format(num_batches))
 
+
     for ibatch in range(num_batches):
       bstart = ibatch * eval_batch_size
       bend = min(bstart + eval_batch_size, num_eval_examples)
+      print('Batch No: {}'.format(ibatch))
       print('batch size: {}'.format(bend - bstart))
 
       x_batch = mnist.test.images[bstart:bend, :]
