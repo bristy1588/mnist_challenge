@@ -9,8 +9,8 @@ from __future__ import print_function
 import tensorflow as tf
 
 # The Step Function Multipliers MULT_A * MULT_B = 1
-MULT_A = 1
-MULT_B  = 1
+MULT_A = 0.2
+MULT_B  = 5
 
 class Model(object):
   def __init__(self):
@@ -24,7 +24,7 @@ class Model(object):
     b_conv1 = self._bias_variable([32])
 
     h_conv1 = tf.nn.relu(self._conv2d(self.x_image, W_conv1) + b_conv1)
-    f_conv1 = tf.stop_gradient(tf.floor(h_conv1* MULT_A)* MULT_B - h_conv1) + h_conv1
+    f_conv1 = tf.stop_gradient(tf.floor(h_conv1 * MULT_A)* MULT_B - h_conv1) + h_conv1
 
     h_pool1 = self._max_pool_2x2(f_conv1)
 
