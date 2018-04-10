@@ -1,6 +1,6 @@
 {
   "_comment": "===== MODEL CONFIGURATION =====",
-  "model_dir": "models/step2",
+  "model_dir": "models/step3",
 
   "_comment": "===== TRAINING CONFIGURATION =====",
   "random_seed": 4557077,
@@ -13,7 +13,7 @@
   "_comment": "===== EVAL CONFIGURATION =====",
   "num_eval_examples": 10000,
   "eval_batch_size": 200,
-  "eval_on_cpu": true,
+  "eval_on_cpu": false,
 
   "_comment": "=====ADVERSARIAL EXAMPLES CONFIGURATION=====",
   "epsilon": 0.3,

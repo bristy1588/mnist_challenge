@@ -8,9 +8,9 @@ from __future__ import print_function
 
 import tensorflow as tf
 
-# The Step Function Multipliers
-MULT_A = 2
-MULT_B  = 0.5
+# The Step Function Multipliers MULT_A * MULT_B = 1
+MULT_A = 1
+MULT_B  = 1
 
 class Model(object):
   def __init__(self):
