@@ -9,8 +9,10 @@ from __future__ import print_function
 import tensorflow as tf
 
 # The Step Function Multipliers MULT_A * MULT_B = 1
-MULT_A = 0.01
-MULT_B  = 50
+MULT_A = 0.1
+MULT_B  = 10
+
+LAM_REG_WEIGHT = 1.0
 
 class Model(object):
   def __init__(self):
@@ -25,6 +27,7 @@ class Model(object):
 
     h_conv1 = tf.nn.relu(self._conv2d(self.x_image, W_conv1) + b_conv1)
     f_conv1 = tf.stop_gradient(tf.floor(h_conv1 * MULT_A)* MULT_B - h_conv1) + h_conv1
+    reg_conv1 = tf.reduce_sum(tf.abs(tf.floor(f_conv1 * MULT_A) * MULT_B - MULT_B / 2.0))
 
     h_pool1 = self._max_pool_2x2(f_conv1)
 
@@ -55,6 +58,8 @@ class Model(object):
 
     self.xent = tf.reduce_sum(y_xent)
 
+    self.reg_loss = reg_conv1
+    self.my_loss = self.xent + self.reg_loss * LAM_REG_WEIGHT
     self.y_pred = tf.argmax(self.pre_softmax, 1)
 
     correct_prediction = tf.equal(self.y_pred, self.y_input)
