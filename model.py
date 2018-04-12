@@ -12,7 +12,7 @@ import tensorflow as tf
 MULT_A = 0.1
 MULT_B  = 10
 
-LAM_REG_WEIGHT = 1.0
+LAM_REG_WEIGHT = 0.1
 
 class Model(object):
   def __init__(self):
@@ -37,6 +37,8 @@ class Model(object):
 
     h_conv2 = tf.nn.relu(self._conv2d(h_pool1, W_conv2) + b_conv2)
     f_conv2 = tf.stop_gradient(tf.floor(h_conv2 * MULT_A) * MULT_B - h_conv2) + h_conv2
+    reg_conv2 = tf.reduce_sum(tf.abs(tf.floor(f_conv2 * MULT_A) * MULT_B - MULT_B / 2.0))
+
     h_pool2 = self._max_pool_2x2(f_conv2)
 
     # first fully connected layer
@@ -46,6 +48,7 @@ class Model(object):
     h_pool2_flat = tf.reshape(h_pool2, [-1, 7 * 7 * 64])
     h_fc1 = tf.nn.relu(tf.matmul(h_pool2_flat, W_fc1) + b_fc1)
     f_fc1 = tf.stop_gradient(tf.floor(h_fc1 * MULT_A) * MULT_B - h_fc1) + h_fc1
+    reg_fc1 = tf.reduce_sum(tf.abs(tf.floor(f_fc1 * MULT_A) * MULT_B - MULT_B / 2.0))
 
     # output layer
     W_fc2 = self._weight_variable([1024,10])
@@ -58,7 +61,7 @@ class Model(object):
 
     self.xent = tf.reduce_sum(y_xent)
 
-    self.reg_loss = reg_conv1
+    self.reg_loss = reg_conv1 + reg_conv2 + reg_fc1
     self.my_loss = self.xent + self.reg_loss * LAM_REG_WEIGHT
     self.y_pred = tf.argmax(self.pre_softmax, 1)
 
