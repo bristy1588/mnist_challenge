@@ -9,10 +9,10 @@ from __future__ import print_function
 import tensorflow as tf
 
 # The Step Function Multipliers MULT_A * MULT_B = 1
-MULT_A = 0.1
-MULT_B  = 10
+MULT_A = 0.05
+MULT_B  = 20
 
-LAM_REG_WEIGHT = 0.001
+LAM_REG_WEIGHT = 0.01
 
 class Model(object):
   def __init__(self):
