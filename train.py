@@ -36,7 +36,7 @@ global_step = tf.contrib.framework.get_or_create_global_step()
 model = Model()
 
 # Setting up the optimizer
-train_step = tf.train.AdamOptimizer(1e-4).minimize(model.my_loss,
+train_step = tf.train.AdamOptimizer(1e-5).minimize(model.my_loss,
                                                    global_step=global_step)
 
 # Set up adversary
