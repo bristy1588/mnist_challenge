@@ -12,7 +12,7 @@ import tensorflow as tf
 MULT_A = 0.05
 MULT_B  = 20
 
-LAM_REG_WEIGHT = 0.003
+LAM_REG_WEIGHT = 0.001
 
 class Model(object):
   def __init__(self):
