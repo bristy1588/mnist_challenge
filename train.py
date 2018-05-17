@@ -96,7 +96,7 @@ with tf.Session() as sess:
       nat_acc = sess.run(model.accuracy, feed_dict=nat_dict)
       #adv_acc = sess.run(model.accuracy, feed_dict=adv_dict)
       print('Bristy :D Step {}:    ({})'.format(ii, datetime.now()))
-      print('    training nat accuracy {:.4}%'.format(nat_acc * 100))
+      print('    Training nat accuracy {:.4}%'.format(nat_acc * 100))
       #print('    training adv accuracy {:.4}%'.format(adv_acc * 100))
       if ii != 0:
         print('    {} examples per second'.format(
