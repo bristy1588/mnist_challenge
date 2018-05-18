@@ -28,7 +28,7 @@ class Model(object):
 
     h_conv1 = tf.nn.relu(self._conv2d(self.x_image, W_conv1) + b_conv1)
     f_conv1 = tf.stop_gradient(tf.floor(h_conv1 * self.MULT_A) * self.MULT_B - h_conv1) + h_conv1
-    reg_conv1 = tf.reduce_sum(tf.abs(h_conv1 - f_conv1 - 0.5))
+    reg_conv1 = tf.reduce_sum(tf.abs(h_conv1 - f_conv1 - self.MULT_A/2.0))
 
     h_pool1 = self._max_pool_2x2(f_conv1)
 
@@ -38,7 +38,7 @@ class Model(object):
 
     h_conv2 = tf.nn.relu(self._conv2d(h_pool1, W_conv2) + b_conv2)
     f_conv2 = tf.stop_gradient(tf.floor(h_conv2 * self.MULT_A) * self.MULT_B - h_conv2) + h_conv2
-    reg_conv2 = tf.reduce_sum(tf.abs(h_conv2 - f_conv2 - 0.5))
+    reg_conv2 = tf.reduce_sum(tf.abs(h_conv2 - f_conv2 -  self.MULT_A/2.0))
 
     h_pool2 = self._max_pool_2x2(f_conv2)
 
@@ -49,7 +49,7 @@ class Model(object):
     h_pool2_flat = tf.reshape(h_pool2, [-1, 7 * 7 * 64])
     h_fc1 = tf.nn.relu(tf.matmul(h_pool2_flat, W_fc1) + b_fc1)
     f_fc1 = tf.stop_gradient(tf.floor(h_fc1 * self.MULT_A) * self.MULT_B - h_fc1) + h_fc1
-    reg_fc1 = tf.reduce_sum(tf.abs(h_fc1 - f_fc1 - 0.5))
+    reg_fc1 = tf.reduce_sum(tf.abs(h_fc1 - f_fc1 - self.MULT_A/2.0))
 
     # output layer
     W_fc2 = self._weight_variable([1024,10])
