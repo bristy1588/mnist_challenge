@@ -116,8 +116,10 @@ if __name__ == '__main__':
     for ibatch in range(num_batches):
       bstart = ibatch * eval_batch_size
       bend = min(bstart + eval_batch_size, num_eval_examples)
-      print('Batch No: {}'.format(ibatch))
-      print('batch size: {}'.format(bend - bstart))
+
+      if (ibatch % 10 == 0):
+        print('Batch No: {}'.format(ibatch))
+        print('batch size: {}'.format(bend - bstart))
 
       x_batch = mnist.test.images[bstart:bend, :]
       y_batch = mnist.test.labels[bstart:bend]

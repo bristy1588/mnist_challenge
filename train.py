@@ -22,7 +22,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument("Train", type=float, help="Num Training Steps")
 parser.add_argument("Step", type=float, help="Step Size")
 parser.add_argument("Reg", type=float, help="Regularization Weight")
-
+parser.add_argument("Eps", type=float, help="Epsilon Perturbation")
 
 args = parser.parse_args()
 relu_step = args.Step
@@ -54,8 +54,10 @@ train_step = tf.train.AdamOptimizer(1e-4).minimize(model.my_loss,
                                                    global_step=global_step)
 
 # Set up adversary
-attack = LinfPGDAttack(model, 
-                       config['epsilon'],
+adv_epsilon = config['epsilon']
+adv_epsilon = args.Eps
+attack = LinfPGDAttack(model,
+                       adv_epsilon,
                        config['k'],
                        config['a'],
                        config['random_start'],
@@ -107,11 +109,11 @@ with tf.Session() as sess:
     #            model.y_input: y_batch}
 
     # Output to stdout
-    if ii % num_output_steps == 0:
+    if (ii + 1) % num_output_steps == 0:
       nat_acc = sess.run(model.accuracy, feed_dict=nat_dict)
       #adv_acc = sess.run(model.accuracy, feed_dict=adv_dict)
       print('Bristy :D Step {}:    ({})'.format(ii, datetime.now()))
-      print('    Training nat accuracy {:.4}%'.format(nat_acc * 100))
+      print('    Training nat accuracy {:.4}%'.format(nat_acc * 100.0))
       #print('    training adv accuracy {:.4}%'.format(adv_acc * 100))
       if ii != 0:
         print('    {} examples per second'.format(
