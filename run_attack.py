@@ -18,10 +18,6 @@ import numpy as np
 
 from model import Model
 
-import argparse
-parser = argparse.ArgumentParser()
-parser.add_argument("Eps", type=float, help="Epsilon to Perturb")
-
 def run_attack(checkpoint, x_adv, epsilon):
   mnist = input_data.read_data_sets('MNIST_data', one_hot=False)
 
@@ -74,8 +70,6 @@ def run_attack(checkpoint, x_adv, epsilon):
 
 if __name__ == '__main__':
   import json
-
-  args = parser.parse_args()
   with open('config.json') as config_file:
     config = json.load(config_file)
 
@@ -84,7 +78,7 @@ if __name__ == '__main__':
   checkpoint = tf.train.latest_checkpoint(model_dir)
   x_adv = np.load(config['store_adv_path'])
   current_eps = config['epsilon']
-  current_eps = args.Eps
+
   if checkpoint is None:
     print('No checkpoint found')
   elif x_adv.shape != (10000, 784):

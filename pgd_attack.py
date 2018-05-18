@@ -11,6 +11,10 @@ import tensorflow as tf
 import numpy as np
 
 
+import argparse
+parser = argparse.ArgumentParser()
+parser.add_argument("EPS", type=float, help="Epsilon to Perturb")
+
 class LinfPGDAttack:
   def __init__(self, model, epsilon, k, a, random_start, loss_func):
     """Attack parameter initialization. The attack performs k steps of
@@ -21,6 +25,11 @@ class LinfPGDAttack:
     self.k = k
     self.a = a
     self.rand = random_start
+
+
+    print("    ")
+    print("  Running with Epsilon: ", epsilon)
+    print("     ")
 
     if loss_func == 'xent':
       loss = model.xent
@@ -77,8 +86,11 @@ if __name__ == '__main__':
     sys.exit()
 
   model = Model()
+  args = parser.parse_args()
+  current_eps = args.EPS
+  print (" Using EPS == ", current_eps)
   attack = LinfPGDAttack(model,
-                         config['epsilon'],
+                         current_eps,
                          config['k'],
                          config['a'],
                          config['random_start'],
