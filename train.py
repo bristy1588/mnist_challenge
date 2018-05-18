@@ -17,6 +17,20 @@ from tensorflow.examples.tutorials.mnist import input_data
 from model import Model
 from pgd_attack import LinfPGDAttack
 
+import argparse
+parser = argparse.ArgumentParser()
+parser.add_argument("Train", type=float, help="Num Training Steps")
+parser.add_argument("Step", type=float, help="Step Size")
+parser.add_argument("Reg", type=float, help="Regularization Weight")
+
+
+args = parser.parse_args()
+relu_step = args.Step
+lambda_reg = args.Reg
+num_itrs = int(args.Train)
+
+print(" ~~~~~~~ ~~~~ ~~~  !! Step:", relu_step, "  Regularization Lambda:", lambda_reg, "  Training Itrs:", num_itrs)
+
 with open('config.json') as config_file:
     config = json.load(config_file)
 
@@ -33,7 +47,7 @@ batch_size = config['training_batch_size']
 # Setting up the data and the model
 mnist = input_data.read_data_sets('MNIST_data', one_hot=False)
 global_step = tf.contrib.framework.get_or_create_global_step()
-model = Model()
+model = Model(MULT_A = relu_step, LAM_REG_WEIGHT =lambda_reg )
 
 # Setting up the optimizer
 train_step = tf.train.AdamOptimizer(1e-4).minimize(model.my_loss,
@@ -76,6 +90,7 @@ with tf.Session() as sess:
   training_time = 0.0
 
   # Main training loop
+  max_num_training_steps = num_itrs
   for ii in range(max_num_training_steps):
     x_batch, y_batch = mnist.train.next_batch(batch_size)
 
